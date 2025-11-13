@@ -5,6 +5,7 @@ import NewComplaint from "./pages/NewComplaint";
 import MyComplaints from "./pages/MyComplaints";
 import AuthorityDashboard from "./pages/AuthorityDashboard";
 import Navbar from "./components/Navbar";
+import AllComplaints from "./pages/AllComplaints";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/new" element={<NewComplaint />} />
           <Route path="/my" element={<MyComplaints />} />
+          <Route path="/all" element={<AllComplaints />} />
           <Route path="/authority" element={<AuthorityDashboard />} />
         </Routes>
       </div>

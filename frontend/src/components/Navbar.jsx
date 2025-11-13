@@ -41,6 +41,9 @@ export default function Navbar() {
               <Link to="/my" className="hover:text-blue-600">
                 My Complaints
               </Link>
+              <Link to="/all" className="hover:text-blue-600">
+                All Complaints
+              </Link>
             </>
           )}
 

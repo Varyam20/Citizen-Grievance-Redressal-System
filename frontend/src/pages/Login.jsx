@@ -70,13 +70,6 @@ export default function Login() {
           </a>
         </p>
 
-        <div className="mt-4 text-xs text-gray-500 text-center">
-          <p>Authority demo logins:</p>
-          <p>roads@cgrs.in / roads123</p>
-          <p>water@cgrs.in / water123</p>
-          <p>electricity@cgrs.in / electric123</p>
-          <p>sanitation@cgrs.in / clean123</p>
-        </div>
       </div>
     </div>
   );
