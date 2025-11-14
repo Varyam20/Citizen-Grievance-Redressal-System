@@ -57,7 +57,7 @@ router.get("/", authMiddleware, authorizeRoles("authority"), async (req, res) =>
   const filter = req.query.department 
     ? { department: req.query.department } 
     : { $or: [{ department: req.user.department }, { department: "General" }] };
-  const sort = req.query.sort === "top" ? { upvotes: -1 } : { createdAt: -1 };
+  const sort = req.query.sort === "top" ? { upvotes: -1 } : { createdAt: -1 }; // default sort by newest
   const complaints = await Complaint.find(filter).sort(sort);
   res.json(complaints);
 });
