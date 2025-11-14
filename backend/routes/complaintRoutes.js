@@ -28,14 +28,14 @@ router.post("/", authMiddleware, upload.array("photos", 3), async (req, res) => 
 
 // My complaints (citizen)
 router.get("/my", authMiddleware, async (req, res) => {
-  const complaints = await Complaint.find({ authorId: req.user.id }).sort({ createdAt: -1 });
+  const complaints = await Complaint.find({ authorId: req.user.id }).sort({ upvotes: -1 });
   res.json(complaints);
 });
 
 // All complaints for browsing (authenticated users) - can be filtered by dept
 router.get("/all", authMiddleware, async (req, res) => {
   const filter = req.query.department ? { department: req.query.department } : {};
-  const complaints = await Complaint.find(filter).sort({ createdAt: -1 });
+  const complaints = await Complaint.find(filter).sort({ upvotes: -1 });
   res.json(complaints);
 });
 
@@ -53,7 +53,10 @@ router.post("/:id/upvote", authMiddleware, async (req, res) => {
 
 // Authority: Get all complaints (view + optional department filter); sort by upvotes if query sort=top
 router.get("/", authMiddleware, authorizeRoles("authority"), async (req, res) => {
-  const filter = req.query.department ? { department: req.query.department } : {};
+  // Filter by authority's department and 'General' complaints
+  const filter = req.query.department 
+    ? { department: req.query.department } 
+    : { $or: [{ department: req.user.department }, { department: "General" }] };
   const sort = req.query.sort === "top" ? { upvotes: -1 } : { createdAt: -1 };
   const complaints = await Complaint.find(filter).sort(sort);
   res.json(complaints);

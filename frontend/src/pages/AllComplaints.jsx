@@ -6,6 +6,7 @@ export default function AllComplaints() {
   const [deptFilter, setDeptFilter] = useState("");
 
   const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("id");
 
   useEffect(() => {
     if (!token) return;
@@ -71,7 +72,8 @@ export default function AllComplaints() {
             {visibleAll.map((c) => (
               <div
                 key={c._id}
-                className="border rounded-lg p-3 bg-gray-50 hover:shadow-md transition flex flex-col justify-between"
+                className="border rounded-lg p-3 bg-gray-50 hover:shadow-md transition flex flex-col justify-between cursor-pointer"
+                onDoubleClick={() => window.open(`/complaint/${c._id}`, "_blank")}
               >
                 <div>
                   <div className="font-semibold text-blue-700">
@@ -119,10 +121,13 @@ export default function AllComplaints() {
                 </div>
 
                 <button
-                  className="mt-3 bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
+                  className={`mt-3 px-3 py-1 rounded text-sm transition ${c.upvoters && c.upvoters.includes(userId)
+                    ? 'bg-gray-400 text-white cursor-not-allowed' 
+                    : 'bg-blue-600 text-white hover:bg-blue-700'}`}
                   onClick={() => upvote(c._id)}
+                  disabled={c.upvoters && c.upvoters.includes(userId)}
                 >
-                  Upvote
+                  {c.upvoters && c.upvoters.includes(userId) ? 'Upvoted' : 'Upvote'}
                 </button>
               </div>
             ))}

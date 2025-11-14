@@ -12,10 +12,11 @@ export default function Login() {
       const res = await axios.post("http://localhost:5000/api/auth/login", form);
 
       // Save auth data
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("role", res.data.role);
-      localStorage.setItem("department", res.data.department || "");
-      localStorage.setItem("name", res.data.name);
+  localStorage.setItem("token", res.data.token);
+  localStorage.setItem("role", res.data.role);
+  localStorage.setItem("department", res.data.department || "");
+  localStorage.setItem("name", res.data.name);
+  localStorage.setItem("id", res.data.id);
 
       // Redirect based on role
       if (res.data.role === "authority") {

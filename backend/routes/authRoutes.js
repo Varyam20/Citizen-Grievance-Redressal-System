@@ -27,8 +27,8 @@ router.post("/login", async (req, res) => {
     if (!user) return res.status(404).json({ message: "No account found" });
     const valid = await bcrypt.compare(password, user.passwordHash);
     if (!valid) return res.status(400).json({ message: "Incorrect password" });
-    const token = jwt.sign({ id: user._id, role: user.role, department: user.department }, process.env.JWT_SECRET);
-    res.json({ token, role: user.role, name: user.name, department: user.department });
+  const token = jwt.sign({ id: user._id, role: user.role, department: user.department }, process.env.JWT_SECRET);
+  res.json({ token, role: user.role, name: user.name, department: user.department, id: user._id });
   } catch (err) {
     res.status(500).json({ message: "Login error", error: err.message });
   }

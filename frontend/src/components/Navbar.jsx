@@ -23,12 +23,12 @@ export default function Navbar() {
 
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-6 py-3 flex justify-between items-center">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         <h1
           onClick={() => navigate("/")}
-          className="text-xl font-bold text-blue-600 cursor-pointer"
+          className="text-xl font-bold text-green-700 cursor-pointer"
         >
-          CGRS
+          Citizen Grievance Redressal
         </h1>
 
         <div className="flex items-center gap-5 text-gray-700 text-sm font-medium">

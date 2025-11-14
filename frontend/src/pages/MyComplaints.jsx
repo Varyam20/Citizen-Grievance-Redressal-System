@@ -13,6 +13,7 @@ export default function MyComplaints() {
         const r1 = await axios.get("http://localhost:5000/api/complaints/my", {
           headers: { Authorization: `Bearer ${token}` },
         });
+        // Backend already sorts by upvotes
         setMine(r1.data);
       } catch (err) {
         console.error(err);
@@ -36,11 +37,12 @@ export default function MyComplaints() {
             You have not filed any complaint yet.
           </p>
         ) : (
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
             {mine.map((c) => (
               <div
                 key={c._id}
-                className="border rounded-lg p-3 bg-gray-50 hover:shadow-md transition"
+                className="border rounded-lg p-3 bg-gray-50 hover:shadow-md transition cursor-pointer"
+                onDoubleClick={() => window.open(`/complaint/${c._id}`, "_blank")}
               >
                 <div className="font-semibold text-blue-700 mb-1">
                   {c.title}
@@ -49,8 +51,11 @@ export default function MyComplaints() {
                 <div className="text-xs text-gray-500 mt-1">
                   Dept: {c.department} • Location: {c.locationText}
                 </div>
+                <div className="text-xs text-gray-500">
+                  Votes: {c.upvotes}
+                </div>
                 <div className="text-xs mt-1">
-                  Status:{" "}
+                  Status: {" "}
                   <span
                     className={`font-medium ${
                       c.status === "Resolved"
@@ -86,7 +91,7 @@ export default function MyComplaints() {
                     </p>
                     {c.authorityComments.map((ac, i) => (
                       <div key={i} className="text-sm text-gray-600">
-                        • {ac.comment}{" "}
+                        • {ac.comment} {" "}
                         <span className="text-xs text-gray-400">
                           ({new Date(ac.createdAt).toLocaleString()})
                         </span>
