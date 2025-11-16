@@ -7,20 +7,18 @@ Built with React + Tailwind, Node.js + Express and MongoDB, the system streamlin
 
 ## 📌 Table of Contents
 
-- [About the Project](#about-the-project)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [System Architecture](#system-architecture)
-- [Screenshots](#screenshots)
-- [Folder Structure](#folder-structure)
-- [Installation & Setup](#installation--setup)
-- [Environment Variables](#environment-variables)
-- [API Endpoints](#api-endpoints)
-- [Deployment](#deployment)
-- [Future Enhancements](#future-enhancements)
-- [Contributors](#contributors)
-- [License](#license)
-
+- [About the Project](#-about-the-project)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [System Architecture](#-system-architecture)
+- [Folder Structure](#-folder-structure)
+- [Screenshots](#-screenshots)
+- [Installation & Setup](#-installation--setup)
+- [Environment Variables](#-environment-variables)
+- [API Endpoints](#-api-endpoints)
+- [Deployment](#-deployment)
+- [Future Enhancements](#-future-enhancements)
+- [Contributors](#-contributors)
 ---
 
 ## 📖 About the Project
@@ -123,25 +121,44 @@ Citizen-Grievance-Redressal-System/
 │
 ├── backend/
 │   ├── config/
-│   ├── controllers/
-│   ├── middlewares/
+│   ├── middleware/
 │   ├── models/
 │   ├── routes/
-│   └── index.js
+|   ├── scripts/
+│   └── server.js
 │
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
 │   │   ├── pages/
-│   │   ├── hooks/
 │   │   ├── utils/
-│   │   └── App.jsx
+│   │   ├── App.jsx
+|   |   └── main.jsx
 │   └── public/
 │
-└── README.md
+├── README.md
+│
+├── Data Flow Diagram/
+|
+└── Unified Modeling Language Diagrams/
 ```
 
 ---
+
+## 📷 Screenshots
+
+<div align="center">
+       <img src="frontend/public/screenshots/home.png" alt="home" width="360" style="margin:8px; border-radius:8px;"/>
+       <img src="frontend/public/screenshots/RegistrationPage.png" alt="reg" width="360" style="margin:8px; border-radius:8px;"/>
+       <img src="frontend/public/screenshots/newComplaints.png" alt="newComplaint" width="360" style="margin:8px; border-radius:8px;"/>
+       <img src="frontend/public/screenshots/userViewComplaints.png" alt="userView" width="360" style="margin:8px; border-radius:8px;"/>
+       <img src="frontend/public/screenshots/upvoteUser.png" alt="upvote" width="360" style="margin:8px; border-radius:8px;"/>
+       <img src="frontend/public/screenshots/deptsToggle.png" alt="deps" width="360" style="margin:8px; border-radius:8px;"/>
+       <img src="frontend/public/screenshots/authDashboard.png" alt="authority" width="360" style="margin:8px; border-radius:8px;"/>
+       <img src="frontend/public/screenshots/gmailValidation.png" alt="gmail" width="360" style="margin:8px; border-radius:8px;"/>
+       <img src="frontend/public/screenshots/registrationValidation.png" alt="validReg" width="360" style="margin:8px; border-radius:8px;"/>
+       <img src="frontend/public/screenshots/allComplaintsUser.png" alt="All Complaints" width="360" style="margin:8px; border-radius:8px;"/>
+</div>
 
 ## 🧩 Installation & Setup
 
@@ -154,18 +171,20 @@ cd Citizen-Grievance-Redressal-System
 ### 2️⃣ Setup Backend
 ```bash
 cd backend
-npm install
+npm i
 ```
 
 Run server:
 ```bash
 npm start
+npm run dev
 ```
 
 ### 3️⃣ Setup Frontend
 ```bash
 cd frontend
-npm install
+npm i
+npm start
 npm run dev
 ```
 
@@ -255,7 +274,3 @@ Deploy on **Render**:
 - Ishita Garg       
 
 ---
-
-## 📄 License
-
-This project is licensed under the **MIT License**.

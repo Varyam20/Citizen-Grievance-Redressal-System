@@ -9,7 +9,7 @@ export default function Register() {
   const navigate = useNavigate();
 
   const isValidEmail = (email) => {
-    const validDomains = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'aol.com', 'mail.com', 'protonmail.com'];
+    const validDomains = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'aol.com', 'mail.com', 'protonmail.com', 'cgrs.in'];
     const domain = email.split('@')[1];
     return validDomains.includes(domain?.toLowerCase());
   };
