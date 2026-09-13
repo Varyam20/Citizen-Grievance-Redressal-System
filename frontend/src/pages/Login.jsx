@@ -21,7 +21,7 @@ export default function Login() {
 
     try {
       setLoading(true);
-      const res = await axios.post("http://localhost:5000/api/auth/login", form);
+      const res = await axios.post("https://cgrs-backend.onrender.com/api/auth/login", form);
 
       // Save auth data
   localStorage.setItem("token", res.data.token);

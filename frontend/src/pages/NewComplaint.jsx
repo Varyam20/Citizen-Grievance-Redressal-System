@@ -1,51 +1,109 @@
 import AutocompleteInput from "../components/Autocomplete";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import { DEPARTMENTS, CHANDIGARH_LOCATIONS } from "../utils/constants";
+import { DEPARTMENTS} from "../utils/constants";
 import { useNavigate } from "react-router-dom";
-
+import DuplicateModal from "../components/DuplicateModal";
 export default function NewComplaint() {
   const navigate = useNavigate();
   const [form, setForm] = useState({ title: "", description: "", locationText: "", department: "" });
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [submitState, setSubmitState] = useState(null); // 'submitting', 'submitted', null
+  const descRef = useRef(null);
+  const [duplicateData, setDuplicateData] = useState(null);
+  useEffect(() => {
+    if (descRef.current) {
+      descRef.current.style.height = "auto";
+      descRef.current.style.height = descRef.current.scrollHeight + "px";
+    }
+  }, [form.description]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       setLoading(true);
-      setSubmitState('submitting');
       const token = localStorage.getItem("token");
       if (!token) return alert("Please login first");
-      const fd = new FormData();
-      fd.append("title", form.title);
-      fd.append("description", form.description);
-      fd.append("locationText", form.locationText);
-      fd.append("department", form.department);
-      for (let i = 0; i < photos.length; i++) fd.append("photos", photos[i]);
 
-      await axios.post("http://localhost:5000/api/complaints", fd, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      
-      // Show "Submitted" state
-      setSubmitState('submitted');
-      
-      // Reset after 3 seconds
-      setTimeout(() => {
+      // 🔁 First check duplicates
+      const checkRes = await axios.post(
+        "https://cgrs-backend.onrender.com/api/complaints/check-duplicate",
+        {
+          title: form.title,
+          locationText: form.locationText,
+          department: form.department
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (checkRes.data.duplicate) {
+        setDuplicateData(checkRes.data.similarComplaints);
         setLoading(false);
-        setSubmitState(null);
-        setForm({ title: "", description: "", locationText: "", department: "" });
-        setPhotos([]);
-        navigate("/my");
-      }, 2500);
+        return;
+      }
+
+      await submitComplaint(token);
+
     } catch (err) {
       console.error(err);
       alert(err?.response?.data?.message || "Submit failed");
       setLoading(false);
-      setSubmitState(null);
     }
+  };
+
+  const submitComplaint = async (token) => {
+    setSubmitState('submitting');
+
+    const fd = new FormData();
+    fd.append("title", form.title);
+    fd.append("description", form.description);
+    fd.append("locationText", form.locationText);
+    fd.append("department", form.department);
+    for (let i = 0; i < photos.length; i++) fd.append("photos", photos[i]);
+
+    await axios.post(
+      "https://cgrs-backend.onrender.com/api/complaints",
+      fd,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    setSubmitState('submitted');
+
+    setTimeout(() => {
+      setLoading(false);
+      setSubmitState(null);
+      setForm({ title: "", description: "", locationText: "", department: "" });
+      setPhotos([]);
+      navigate("/my");
+    }, 2500);
+  };
+
+  const handleUpvote = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(
+        `https://cgrs-backend.onrender.com/api/complaints/${id}/upvote`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      alert("Upvoted successfully!");
+      setDuplicateData(null);
+      navigate("/all");
+    } catch (err) {
+      alert(err?.response?.data?.message || "Failed to upvote");
+    }
+  };
+
+  const handleSubmitAnyway = async () => {
+    const token = localStorage.getItem("token");
+    setDuplicateData(null);
+    await submitComplaint(token);
+  };
+
+  const handleCloseModal = () => {
+    setDuplicateData(null);
   };
 
   return (
@@ -65,12 +123,17 @@ export default function NewComplaint() {
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
           <textarea
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            ref={descRef}
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition overflow-hidden resize-none"
             placeholder="Description"
             value={form.description}
-            onChange={e=>setForm({...form,description:e.target.value})}
+            onChange={e => {
+              setForm({ ...form, description: e.target.value });
+              e.target.style.height = "auto";
+              e.target.style.height = e.target.scrollHeight + "px";
+            }}
             required
-            rows={4}
+            rows={1}
           />
         </div>
         <div>
@@ -127,6 +190,15 @@ export default function NewComplaint() {
           </button>
         </div>
       </form>
+      {duplicateData && (
+        <DuplicateModal
+          complaints={duplicateData}
+          onUpvote={handleUpvote}
+          onSubmitAnyway={handleSubmitAnyway}
+          onClose={handleCloseModal}
+          currentUserId={localStorage.getItem("id")}
+        />
+      )}
     </div>
   );
 }

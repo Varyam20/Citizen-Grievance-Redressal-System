@@ -24,7 +24,7 @@ export default function Register() {
     }
 
     try {
-      await axios.post("http://localhost:5000/api/auth/register", form);
+      await axios.post("https://cgrs-backend.onrender.com/api/auth/register", form);
       setRegistered(true);
       setTimeout(() => {
         navigate("/");
